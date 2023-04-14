@@ -1,0 +1,112 @@
+=> [1/5] FROM docker.io/library/node:17-alpine@sha256:76e638eb0d73ac5f0b76d70df3ce1ddad941ac63595d44092b625e2cd557d  0.0s 
+ => CACHED [2/5] WORKDIR /usr/src/app                                                                                 0.0s 
+ => CACHED [3/6] COPY package*.json ./                                                                                0.0s 
+ => CACHED [4/6] RUN npm install                                                                                      0.0s 
+ => CACHED [5/6] COPY index.html .                                                                                    0.0s 
+ => CACHED [6/6] COPY server.js .                                                                                     0.3s 
+ => exporting to image                                                                                                3.1s 
+ => => writing image sha256:ab1304152778b83686d012e7b37c104f6316f893e1407749ad3bb949fd70ca58                          0.1s 
+ => => naming to docker.io/library/src-frontend                                                                       0.0s 
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> docker images -a
+REPOSITORY                 TAG         IMAGE ID       CREATED        SIZE
+src-frontend               latest      ab1304152778   23 hours ago   174MB
+src-backend-prd            latest      3fc75e711b2b   27 hours ago   174MB
+src-backend-cart           latest      702b4910b7be   27 hours ago   174MB
+voting-app-docker-worker   latest      a808b12460d1   2 days ago     194MB
+voting-app-docker-vote     latest      85902d4071bc   2 days ago     138MB
+voting-app-docker-result   latest      30c318f3d13e   2 days ago     187MB
+redis                      alpine      1c1b270ed420   2 weeks ago    29.9MB
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> docker-compose up -d
+[+] Running 3/3
+ ✔ Container frontend-container       Started                                                                        14.9s 
+ ✔ Container shopping-cart-container  Started                                                                        15.1s 
+ ✔ Container products-container       Started                                                                        15.3s 
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> docker ps
+698ac5f7a872   src-backend-cart   "docker-entrypoint.s…"   24 seconds ago   Up 8 seconds   0.0.0.0:3002->3002/tcp   shopping-cart-container
+eaeb6fc23a60   src-backend-prd    "docker-entrypoint.s…"   24 seconds ago   Up 7 seconds   0.0.0.0:3001->3001/tcp   products-container
+27da28d82d2f   src-frontend       "docker-entrypoint.s…"   16 hours ago     Up 8 seconds   0.0.0.0:3000->3000/tcp   frontend-container
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED              STATUS              PORTS
+  NAMES
+698ac5f7a872   src-backend-cart   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:3002->3002/tcp 
+  shopping-cart-container
+eaeb6fc23a60   src-backend-prd    "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:3001->3001/tcp 
+  products-container
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> docker logs 27da28d82d2f
+
+> microservice-frontend@1.0.0 start
+> node server.js
+
+app listening on port 3000!
+node:events:505
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: connect ECONNREFUSED 127.0.0.1:3001
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1195:16)
+Emitted 'error' event on ClientRequest instance at:
+    at Socket.socketErrorListener (node:_http_client:454:9)
+    at Socket.emit (node:events:527:28)
+    at emitErrorNT (node:internal/streams/destroy:164:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 3001
+}
+
+Node.js v17.9.1
+
+> microservice-frontend@1.0.0 start
+> node server.js
+
+app listening on port 3000!
+node:events:505
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: connect ECONNREFUSED 127.0.0.1:3001
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1195:16)
+    at emitErrorNT (node:internal/streams/destroy:164:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  address: '127.0.0.1',
+}
+
+Node.js v17.9.1
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src>   
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src>
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> docker-compose down     
+[+] Running 4/4
+ ✔ Container shopping-cart-container  Removed                                                                         4.1s 
+ ✔ Container frontend-container       Removed                                                                         0.5s 
+ ✔ Container products-container       Removed                                                                         3.8s 
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> docker images -a
+REPOSITORY                 TAG         IMAGE ID       CREATED        SIZE
+<none>                     <none>      d3ba09c78694   21 hours ago   174MB
+src-frontend               latest      ab1304152778   23 hours ago   174MB
+src-backend-prd            latest      3fc75e711b2b   27 hours ago   174MB
+src-backend-cart           latest      702b4910b7be   27 hours ago   174MB
+voting-app-docker-worker   latest      a808b12460d1   2 days ago     194MB
+voting-app-docker-vote     latest      85902d4071bc   2 days ago     138MB
+voting-app-docker-result   latest      30c318f3d13e   2 days ago     187MB
+redis                      alpine      1c1b270ed420   2 weeks ago    29.9MB
+postgres                   15-alpine   ddc12ac7fa27   2 weeks ago    243MB
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> docker rmi d3ba09c78694 ab1304152778 3fc75e711b2b 702b4910b7be 
+Deleted: sha256:d3ba09c7869444462a9028971d4979a23d32e3912804c54e085c79535c6e502d
+Untagged: src-frontend:latest
+Deleted: sha256:ab1304152778b83686d012e7b37c104f6316f893e1407749ad3bb949fd70ca58
+Untagged: src-backend-prd:latest
+Deleted: sha256:3fc75e711b2b173fae073f1310e53597bac085969e5d772880bd54f6adbfe0fb
+Untagged: src-backend-cart:latest
+Deleted: sha256:702b4910b7bebfdb7058e3e66d9b3d4f58c23c09032d9c06835c670a435146fa
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> 
+ *  History restored 
+
+PS C:\Vagrant_box\REPO_ROXS_13042023\REPO\src> 
